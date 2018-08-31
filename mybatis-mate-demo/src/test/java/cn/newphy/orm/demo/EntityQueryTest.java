@@ -62,8 +62,10 @@ public class EntityQueryTest extends BaseTest {
     }
 
     @Test public void queryInTest() throws Exception {
-        List<User> list = userDao.query().in("loginName", new String[]{"ZhangFly", "ZhangFlyctYw"})
-            .orderAsc("name").list();
+        List<User> list = userDao.query()
+        		.in("loginName", new String[]{"ZhangFly", "ZhangFlyctYw"})
+        		.orderAsc("name")
+        		.list();
         assertTrue(!list.isEmpty());
     }
 
@@ -91,8 +93,11 @@ public class EntityQueryTest extends BaseTest {
     }
 
     @Test public void queryPageTest() throws Exception {
-        Page<User> page = userDao.query().include("name", "loginName").groupBy("name").eq("level", 0).orderAsc("name")
-            .page(new PageRequest(2, 5, PageMode.TOTAL));
+        Page<User> page = userDao.query()
+        		.include("name", "loginName")
+        		.groupBy("name").eq("level", 0)
+        		.orderAsc("name")
+        		.page(new PageRequest(2, 5, PageMode.TOTAL));
         logger.info("分页结果: {}", page);
         assertTrue(page.getPageNumber() == 2 && page.getNumberOfElements() <= 5);
     }
