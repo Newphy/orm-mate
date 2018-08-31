@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+         http://www.springframework.org/schema/tx 
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+         
+	<!-- dbcp数据库连接池 -->
+	<!-- 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		配置连接池的初始值
+		<property name="initialSize" value="1" />
+		连接池的最大值
+		<property name="maxActive" value="500"/>
+		最大空闲时，当经过一个高峰之后，连接池可以将一些用不到的连接释放，一直减少到maxIdle为止
+		<property name="maxIdle" value="2"/>
+		当最小空闲时，当连接少于minIdle时会自动去申请一些连接
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="100" />
+		<property name="maxIdle" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean> 
+	-->
+	
+	<!-- 阿里 druid数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">  
+         <!-- 数据库基本信息配置 -->
+         <property name="url" value="${jdbc.url}" />  
+         <property name="username" value="${jdbc.username}" />  
+         <property name="password" value="${jdbc.password}" />  
+         <property name="driverClassName" value="${jdbc.driverClassName}" />  
+         <property name="filters" value="${jdbc.filters}" />  
+   		 <!-- 最大并发连接数 -->
+         <property name="maxActive" value="${jdbc.maxActive}" />
+         <!-- 初始化连接数量 -->
+         <property name="initialSize" value="${jdbc.initialSize}" />
+         <!-- 配置获取连接等待超时的时间 -->
+         <property name="maxWait" value="${jdbc.maxWait}" />
+         <!-- 最小空闲连接数 -->
+         <property name="minIdle" value="${jdbc.minIdle}" />  
+   		 <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+         <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+         <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />  
+         <property name="validationQuery" value="${jdbc.validationQuery}" />  
+         <property name="testWhileIdle" value="${jdbc.testWhileIdle}" />  
+         <property name="testOnBorrow" value="${jdbc.testOnBorrow}" />  
+         <property name="testOnReturn" value="${jdbc.testOnReturn}" />  
+         <property name="maxOpenPreparedStatements" value="${jdbc.maxOpenPreparedStatements}" />
+         <!-- 打开removeAbandoned功能 -->
+         <property name="removeAbandoned" value="${jdbc.removeAbandoned}" />
+         <!-- 1800秒，也就是30分钟 -->
+         <property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" />
+         <!-- 关闭abanded连接时输出错误日志 -->   
+         <property name="logAbandoned" value="${jdbc.logAbandoned}" />
+	</bean> 
+
+	<!-- myBatis文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!--<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml" />-->
+	</bean>
+
+	<!-- 配置dao -->
+	<bean class="cn.newphy.orm.mybatis.spring.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.newphy.orm.demo.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    <property name="tableNamePrefix" value="t_" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	
+
+</beans>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity>
+	<tableName>t_attest</tableName>
+	<namespace>com.xiaoniu.attest.mapper.AttestDao</namespace>
+	<type>com.xiaoniu.attest.entity.Attest</type>
+	<simpleName>Attest</simpleName>
+	<propertyMappings>
+		<PropertyMapping>
+			<property>id</property>
+			<column>id</column>
+			<pk>true</pk>
+			<javaType>java.lang.Long</javaType>
+			<jdbcType>BIGINT</jdbcType>			
+		</PropertyMapping>
+		<PropertyMapping>
+			<property>partnerId</property>
+			<column>partner_id</column>
+			<insertable>true</insertable>
+			<updatable>true</updatable>
+			<javaType>java.lang.String</javaType>
+			<jdbcType>VARCHAR</jdbcType>			
+		</PropertyMapping>
+		<PropertyMapping>
+			<property>supplierId</property>
+			<column>supplier_id</column>
+			<insertable>true</insertable>
+			<updatable>true</updatable>
+			<javaType>java.lang.String</javaType>
+			<jdbcType>VARCHAR</jdbcType>
+		</PropertyMapping>
+		<PropertyMapping>
+			<property>version</property>
+			<column>version</column>
+			<versionable>true</versionable>
+			<insertable>true</insertable>
+			<updatable>true</updatable>
+			<javaType>java.lang.Integer</javaType>
+			<jdbcType>INTEGER</jdbcType>
+		</PropertyMapping>		
+	</propertyMappings>
+</entity>
